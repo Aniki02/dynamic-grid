@@ -64,9 +64,31 @@ impl <T> DynamicGrid<T> where T: Clone{
         }
     }
 
+    /// push a new empty row
     pub fn push_row(&mut self){
         self.nb_value_per_row.push(0)
     }
+
+    /// remove the last value of the last row
+    pub fn remove(&mut self){
+        if self.data.len() > 0 {
+            *self.nb_value_per_row.last_mut().unwrap() -= 1;
+            self.data.remove(self.data.len() -1 );
+        }
+    }
+
+    /// remove the last row
+    pub fn remove_row(&mut self) {
+        if self.data.len() > 0 {
+            let len_data = self.data.len();
+            let nb_value_of_last_row = self.nb_value_per_row.remove(self.nb_value_per_row.len() - 1 );
+            for i in  0..nb_value_of_last_row{
+                self.data.remove(len_data - (i + 1));
+            }
+        }
+    }
+
+
 }
 
 impl <T> fmt::Display for DynamicGrid<T> where T: Clone + ToString{
@@ -128,5 +150,19 @@ mod tests {
         g.push_row();
 
         assert_matches!(g.rows(), 1);
+    }
+
+    #[test]
+    fn test_remove() {
+        let mut g = DynamicGrid::init(3, 4, 0);
+        g.remove();
+        assert_matches!(g.row_size(2), Some(3))
+    }
+
+    #[test]
+    fn test_remove_row() {
+        let mut g = DynamicGrid::init(3, 4, 0);
+        g.remove_row();
+        assert_matches!(g.rows(), 2);
     }
 }
