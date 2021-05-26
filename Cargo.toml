@@ -3,6 +3,13 @@ name = "dynamic-grid"
 version = "0.1.0"
 authors = ["zitoun brahim <brahim.zitoun@crisalid.com>"]
 edition = "2018"
+description = "Dynamic grid Structure for Rust"
+keywords = [ "2D", "array", "data-structure", "2D-vector", "grid"]
+readme = "README.md"
+license = "MIT"
+documentation = "https://docs.rs/dynamic-grid"
+homepage = "https://github.com/Aniki02/dynamic-grid"
+repository = "https://github.com/Aniki02/dynamic-grid"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
