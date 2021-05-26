@@ -1,6 +1,6 @@
 # Dynamic grid
 
-Structure Dynamic grid for Rust. 
+Dynamic grid Structure for Rust. 
 It's two dimensional data structure fast and easy to use with no ibligation to have the same number of rows and columns.
 
 ## classic grid
