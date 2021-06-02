@@ -16,14 +16,6 @@ pub struct DynamicGrid <T>{
 impl <T> DynamicGrid<T> where T: Clone{
 
     /// Constructor, Returns a dynamic grid
-    ///
-    /// # Arguments
-    /// # Examples
-    ///
-    /// ```rust,editable
-    ///     let grid = DynamicGrid::new();
-    /// ```
-
     pub fn new () -> Self{
         DynamicGrid{ data: vec![], line_start_index: vec![] }
     }
