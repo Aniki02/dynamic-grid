@@ -5,6 +5,7 @@ use std::fmt;
 use std::fmt::Formatter;
 use std::string::ToString;
 use std::slice::{Iter, IterMut};
+use anyhow::{Result, Error};
 
 #[derive(Default, Debug, Clone)]
 /// Dynamic Grid
@@ -13,7 +14,7 @@ pub struct DynamicGrid <T>{
     line_start_index: Vec<usize>
 }
 
-impl <T> DynamicGrid<T> where T: Clone{
+impl <T> DynamicGrid<T> where T: Clone + PartialEq{
 
     /// Constructor, Returns a dynamic grid
     pub fn new () -> Self{
@@ -164,6 +165,26 @@ impl <T> DynamicGrid<T> where T: Clone{
         }
     }
 
+    /// remove the first occurence of the value
+    pub fn remove_first_occ(&mut self, value: &T) -> Result<T> {
+        let found = self.data.iter().enumerate().find(|(_, v)| value.eq(v));
+        match found {
+            None => {Err(Error::msg("value not found"))}
+            Some((i, _)) => {
+                let res = self.data.remove(i);
+                let end = self.rows() - 1;
+                if self.rows() > 1 {
+                    for j in 0..end{
+                        if self.line_start_index[j] >= i {
+                            self.line_start_index[j+ 1] -= 1;
+                        }
+                    }
+                }
+                Ok(res)
+            }
+        }
+    }
+
     /// remove the last row
     pub fn remove_row(&mut self, index_row: usize) {
         if !self.data.is_empty() && index_row < self.rows(){
@@ -277,7 +298,7 @@ impl <T> DynamicGrid<T> where T: Clone{
 
 }
 
-impl <T> fmt::Display for DynamicGrid<T> where T: Clone + ToString{
+impl <T> fmt::Display for DynamicGrid<T> where T: Clone + PartialEq + ToString{
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         let mut s = String::new();
 
@@ -405,6 +426,18 @@ mod tests {
         let mut g = init();
         g.remove_row(0);
         assert_matches!(g.rows(), 3);
+    }
+
+    #[test]
+    fn test_remove_first_occ() {
+        let mut g = init();
+
+        assert_matches!(g.remove_first_occ(&1), Ok(1));
+        assert_matches!(g.remove_first_occ(&8), Ok(8));
+        assert_matches!(g.remove_first_occ(&10), Ok(10));
+        assert_matches!(g.row_size(2), Some(0));
+        assert_matches!(g.row_size(3), Some(3));
+        assert_matches!(g.row_size(0), Some(2));
     }
 
     #[test]
