@@ -12,7 +12,8 @@ homepage = "https://github.com/Aniki02/dynamic-grid"
 repository = "https://github.com/Aniki02/dynamic-grid"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+anyhow = "1.0.40"
 
 [dev-dependencies]
 assert_matches = "1.5.0"
-anyhow = "1.0.40"
